@@ -4,7 +4,13 @@ import './App.scss';
 import { MoviesList } from './components/MoviesList';
 import moviesFromServer from './api/movies.json';
 
-const normalize = str => str.toLowerCase().trim();
+const normalize = (str = '') => {
+  if (typeof str === 'string') {
+    return str.toLowerCase().trim();
+  }
+
+  return false;
+};
 
 function filterList(list, query) {
   return list.filter(movie => {
