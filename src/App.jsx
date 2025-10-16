@@ -4,17 +4,17 @@ import './App.scss';
 import { MoviesList } from './components/MoviesList';
 import moviesFromServer from './api/movies.json';
 
+const normalize = str => str.toLowerCase().trim();
+
 function filterList(list, query) {
   return list.filter(movie => {
-    const modifiedQuery = query.toLowerCase().trim();
-    const title = movie.title.toLowerCase().trim();
-    const description = movie.description.toLowerCase().trim();
+    const normalizedQuery = normalize(query);
 
-    if (title.includes(modifiedQuery)) {
+    if (normalize(movie.title).includes(normalizedQuery)) {
       return true;
     }
 
-    if (description.includes(modifiedQuery)) {
+    if (normalize(movie.description).includes(normalizedQuery)) {
       return true;
     }
 
@@ -25,7 +25,7 @@ function filterList(list, query) {
 export const App = () => {
   const [query, setQuery] = useState('');
 
-  const filteredList = filterList(moviesFromServer, query);
+  const visibleMovies = filterList(moviesFromServer, query);
 
   return (
     <div className="page">
@@ -51,7 +51,7 @@ export const App = () => {
           </div>
         </div>
 
-        <MoviesList movies={filteredList} />
+        <MoviesList movies={visibleMovies} />
       </div>
 
       <div className="sidebar">Sidebar goes here</div>
